@@ -1,0 +1,9 @@
+{
+  "name": "katana",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "repository": "https://github.com/Chrono-byte/Katana",
+  "author": "Michael Gummere <me@disilla.org>",
+  "license": "NONE",
+  "private": true
+}
