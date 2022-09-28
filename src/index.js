@@ -47,14 +47,13 @@ module.exports = class Katana {
 		return [this.library, this.store];
 	}
 
-	eraseEverythingIGiveUp() {
+	purgeDB() {
 		this.store = [];
 		this.library = {};
 		this.saveState();
 	}
 
 	closeDB() {
-		if (this.scrambleSet == true) this.scramble(this.scramKey);
 		this.saveState();
 		this.library = null;
 		this.store = null;

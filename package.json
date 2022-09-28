@@ -4,7 +4,7 @@
 	"private": false,
 	"description": "thing",
 	"repository": "https://github.com/Chrono-byte/Katana.git",
-	"license": "zLib",
+	"license": "zlib-acknowledgement",
 	"author": "Michael Gummere <me@disilla.org>",
 	"main": "src/index.js",
 	"scripts": {

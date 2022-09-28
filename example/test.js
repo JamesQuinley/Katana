@@ -5,8 +5,11 @@ process.addListener("beforeExit", () => {
 	blade.closeDB();
 });
 
-blade.eraseEverythingIGiveUp();
+blade.purgeDB();
 blade.push("Hello World!", "greeting");
 blade.push("Bye World!", "goodbye");
+blade.closeDB();
+console.log(blade.exportData());
+process.exit();
 
-console.log([blade.get("greeting"), blade.get("goodbye")]);
+// console.log([blade.get("greeting"), blade.get("goodbye")]);
