@@ -1,15 +1,6 @@
-const Katana = require("../src");
+const Katana = require("../src/index");
+const blade = new Katana("./store.json", "./library.json");
 
-const blade = new Katana("./store.json", "./libary.json");
 process.addListener("beforeExit", () => {
-	blade.closeDB();
+	blade.saveState();
 });
-
-blade.purgeDB();
-blade.push("Hello World!", "greeting");
-blade.push("Bye World!", "goodbye");
-blade.closeDB();
-console.log(blade.exportData());
-process.exit();
-
-// console.log([blade.get("greeting"), blade.get("goodbye")]);
