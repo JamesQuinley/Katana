@@ -1,0 +1,6 @@
+*.config.js
+node_modules/
+*.min.js
+addon/dist
+addon/detect-browser
+addon/detect-browser.js
