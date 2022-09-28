@@ -8,6 +8,7 @@
 	"author": "Michael Gummere <me@disilla.org>",
 	"main": "src/index.js",
 	"scripts": {
+		"test": "cd example && node test.js",
 		"lint": "eslint . --ext js,json",
 		"lint:fix": "eslint . --ext js,json --fix"
 	},

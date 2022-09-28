@@ -14,6 +14,7 @@ module.exports = class Katana {
 	}
 
 	push(data, key) {
+		if(this.library[key]) throw new Error("Key already exists");
 		this.store.push(data);
 		this.library[key] = this.store.length - 1;
 		var x = this.encode(key);

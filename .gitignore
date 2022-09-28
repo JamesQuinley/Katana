@@ -73,8 +73,3 @@ addon.crx
 # Build Stuff
 dist/*
 build.sh
-
-
-libary.json
-
-store.json
