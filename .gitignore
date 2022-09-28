@@ -61,15 +61,3 @@ typings/
 .env
 
 # End of https://www.gitignore.io/api/node
-
-# Custom ignores
-
-# Firefox/Chrome Shit
-addon-*/web-ext-artifacts/*
-.web-extension-id
-addon.pem
-addon.crx
-
-# Build Stuff
-dist/*
-build.sh
