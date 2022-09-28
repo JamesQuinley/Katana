@@ -1,6 +1,4 @@
 const fs = require("fs");
-const alphaToNumber = require("./alphaToNumber.json");
-const numberToAlpha = require("./numberToAlpha.json");
 
 module.exports = class Katana {
 	constructor(storPath, libPath) {
@@ -9,23 +7,23 @@ module.exports = class Katana {
 		this.store = [];
 		this.library = {};
 
-		this.store = JSON.parse(fs.readFileSync(this.path, "utf8"));
 		this.library = JSON.parse(fs.readFileSync(this.libPath, "utf8"));
+		this.store = JSON.parse(fs.readFileSync(this.path, "utf8"));
+		if(this.store.length != Object.keys(this.library).length) throw new Error("Store & Library Size Mismatch, Please manually repair!");
 	}
 
 	push(data, key) {
 		if(this.library[key]) throw new Error("Key already exists");
 		this.store.push(data);
 		this.library[key] = this.store.length - 1;
-		var x = this.encode(key);
+		var x = this.encode(this.store[this.library[key]]);
 		this.store[this.library[key]] = x;
 	}
 
 	encode(entry) {
 		let newray = [];
-		this.store[this.library[entry]].split("").forEach((char) => {
-			let x = alphaToNumber[char];
-			newray.push(x);
+		entry.split("").forEach((char) => {
+			newray.push(char.charCodeAt(0));
 		});
 		return newray;
 	}
@@ -33,15 +31,26 @@ module.exports = class Katana {
 	decode(array) {
 		let newray = [];
 		array.forEach((num) => {
-			let x = numberToAlpha[num];
-			newray.push(x);
+			newray.push(String.fromCharCode(num));
 		});
 		newray = newray.join("");
 		return newray;
 	}
 
 	get(key) {
-		return this.decode(this.store[this.library[key]]);
+		if(this.store[this.library[key]] == undefined) throw new Error("Key does not exist");
+		let x = this.store[this.library[key]];
+		return this.decode(x);
+	}
+
+	exportData() {
+		return [this.library, this.store];
+	}
+
+	eraseEverythingIGiveUp() {
+		this.store = [];
+		this.library = {};
+		this.saveState();
 	}
 
 	closeDB() {

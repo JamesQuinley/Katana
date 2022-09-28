@@ -5,5 +5,8 @@ process.addListener("beforeExit", () => {
 	blade.closeDB();
 });
 
+blade.eraseEverythingIGiveUp();
 blade.push("Hello World!", "greeting");
-console.log(blade.get("greeting"));
+blade.push("Bye World!", "goodbye");
+
+console.log([blade.get("greeting"), blade.get("goodbye")]);
