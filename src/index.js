@@ -15,7 +15,7 @@ module.exports = class Katana {
 		if (fs.existsSync(this.strPath) && fs.existsSync(this.libPath)) {
 			this.library = JSON.parse(fs.readFileSync(this.libPath, "utf8"));
 			this.store = JSON.parse(fs.readFileSync(this.strPath, "utf8"));
-			if (this.encryptOpt.enable) this.decrypt();
+			if (this.encryptOpt.enable && fs.existsSync(this.encryptOpt.seedPath)) this.decrypt();
 			if (this.store.length != Object.keys(this.library).length) throw new Error("Store & Library Size Mismatch, Please manually repair!");
 		}
 
@@ -48,9 +48,10 @@ module.exports = class Katana {
 	}
 
 	encrypt() {
-		let seed = Math.random() * 100;
-		this.store = this.store.map((entry) => {
-			return entry * seed;
+		let seed = Math.fround(Math.random() * 100);
+		console.log(seed);
+		this.store = this.store.map(entry => {
+			return entry.map((num) => num * seed);
 		});
 		fs.writeFileSync(this.encryptOpt.seedPath, `${seed}`);
 	}
@@ -58,7 +59,7 @@ module.exports = class Katana {
 	decrypt() {
 		let seed = fs.readFileSync(this.encryptOpt.seedPath, "utf8");
 		this.store = this.store.map((entry) => {
-			return entry / seed;
+			return entry.map((num) => num / seed);
 		});
 	}
 
@@ -70,7 +71,6 @@ module.exports = class Katana {
 	purgeState() {
 		this.store = [];
 		this.library = {};
-		this.saveState();
 	}
 
 	saveState() {
