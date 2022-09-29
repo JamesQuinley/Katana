@@ -1,8 +1,8 @@
 {
-	"name": "katana",
-	"version": "0.0.1",
+	"name": "@chronomly/katana",
+	"version": "0.1.1",
 	"private": false,
-	"description": "thing",
+	"description": "Datastore for simple strings; Data is stored in proprietary format.",
 	"repository": "https://github.com/Chrono-byte/Katana.git",
 	"license": "zlib-acknowledgement",
 	"author": "Michael Gummere <me@disilla.org>",
