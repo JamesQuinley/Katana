@@ -5,3 +5,4 @@ example/
 .gitignore
 .prettierignore
 .prettierrc
+.gitmodules
