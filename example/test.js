@@ -1,4 +1,4 @@
 const Katana = require("../src/index");
-const blade = new Katana("./store.json", "./library.json");
+const blade = new Katana("./db", { encrypt: true });
 
-blade.exportData();
+blade.push("Hello World!", "greeting");

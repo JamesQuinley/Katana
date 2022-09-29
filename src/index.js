@@ -1,19 +1,26 @@
 const fs = require("fs");
+const path = require("path");
 
 module.exports = class Katana {
-	constructor(storPath, libPath) {
-		this.path = storPath;
-		this.libPath = libPath;
+	constructor(dbPath, options) {
+		this.strPath = path.join(dbPath, "store.json");
+		this.libPath = path.join(dbPath, "library.json");
+		this.encryptOpt = {
+			enable: options.encrypt,
+			seedPath: path.join(dbPath, "seed.txt")
+		},
 		this.store = [];
 		this.library = {};
 
-		if (fs.existsSync(this.path) && fs.existsSync(this.libPath)) {
+		if (fs.existsSync(this.strPath) && fs.existsSync(this.libPath)) {
 			this.library = JSON.parse(fs.readFileSync(this.libPath, "utf8"));
-			this.store = JSON.parse(fs.readFileSync(this.path, "utf8"));
+			this.store = JSON.parse(fs.readFileSync(this.strPath, "utf8"));
+			if (this.encryptOpt.enable) this.decrypt();
 			if (this.store.length != Object.keys(this.library).length) throw new Error("Store & Library Size Mismatch, Please manually repair!");
 		}
 
 		process.addListener("beforeExit", () => {
+			if (this.encryptOpt.enable) this.encrypt();
 			this.saveState();
 		});
 	}
@@ -41,8 +48,20 @@ module.exports = class Katana {
 	}
 
 	encrypt() {
-		
+		let seed = Math.random() * 100;
+		this.store = this.store.map((entry) => {
+			return entry * seed;
+		});
+		fs.writeFileSync(this.encryptOpt.seedPath, `${seed}`);
 	}
+
+	decrypt() {
+		let seed = fs.readFileSync(this.encryptOpt.seedPath, "utf8");
+		this.store = this.store.map((entry) => {
+			return entry / seed;
+		});
+	}
+
 
 	exportData() {
 		return [this.library, this.store];
@@ -55,7 +74,7 @@ module.exports = class Katana {
 	}
 
 	saveState() {
-		fs.writeFileSync(this.path, JSON.stringify(this.store));
+		fs.writeFileSync(this.strPath, JSON.stringify(this.store));
 		fs.writeFileSync(this.libPath, JSON.stringify(this.library));
 	}
 };
