@@ -12,6 +12,10 @@ module.exports = class Katana {
 			this.store = JSON.parse(fs.readFileSync(this.path, "utf8"));
 			if (this.store.length != Object.keys(this.library).length) throw new Error("Store & Library Size Mismatch, Please manually repair!");
 		}
+
+		process.addListener("beforeExit", () => {
+			this.saveState();
+		});
 	}
 
 	push(data, key) {
@@ -28,20 +32,16 @@ module.exports = class Katana {
 	}
 
 	encode(entry) {
-		let newray = [];
-		entry.split("").forEach((char) => {
-			newray.push(char.charCodeAt(0));
-		});
-		return newray;
+		return entry.split("").map((char) => char.charCodeAt(0)
+		);
 	}
 
 	decode(array) {
-		let newray = [];
-		array.forEach((num) => {
-			newray.push(String.fromCharCode(num));
-		});
-		newray = newray.join("");
-		return newray;
+		return array.map((num) => String.fromCharCode(num)).join("");
+	}
+
+	encrypt() {
+		
 	}
 
 	exportData() {
