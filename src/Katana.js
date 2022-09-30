@@ -48,9 +48,18 @@ module.exports = class Katana {
 		return this.decode(this.store[this.library[key]]);
 	}
 
+	delete(key) {
+		this.store.splice(this.store.indexOf(this.library[key]), 1);
+		delete this.library[key];
+		try {
+			if(this.get(key)) throw new Error("Failed to delete key");
+		} catch {
+			return;
+		}
+	}
+
 	encode(entry) {
-		return entry.split("").map((char) => char.charCodeAt(0)
-		);
+		return entry.split("").map((char) => char.charCodeAt(0));
 	}
 
 	decode(array) {
@@ -59,7 +68,6 @@ module.exports = class Katana {
 
 	encrypt() {
 		let seed = Math.fround(Math.random() * 100000);
-		console.log(seed);
 		this.store = this.store.map(entry => {
 			return entry.map((num) => num * seed);
 		});
@@ -72,9 +80,8 @@ module.exports = class Katana {
 		});
 	}
 
-
 	exportState() {
-		return [this.library, this.store, this];
+		return [this.library, this.store];
 	}
 
 	purgeState() {
