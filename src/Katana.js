@@ -81,7 +81,11 @@ module.exports = class Katana {
 	}
 
 	exportState() {
-		return [this.library, this.store];
+		this.decrypt();
+		let x = this.library;
+		let y = this.store;
+		this.encrypt();
+		return [x, y];
 	}
 
 	purgeState() {
