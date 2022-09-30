@@ -11,9 +11,13 @@ module.exports = class Katana {
 	constructor(dbPath, options) {
 		this.strPath = path.join(dbPath, "store.json");
 		this.libPath = path.join(dbPath, "library.json");
+class Katana {
+	constructor(dsPath, options) {
+		this.strPath = path.join(dsPath, "store.json");
+		this.libPath = path.join(dsPath, "library.json");
 		this.encryptOpt = {
 			enable: options.encrypt,
-			seedPath: path.join(dbPath, "seed.txt")
+			seedPath: path.join(dsPath, "seed.txt")
 		};
 		this.store = [];
 		this.library = {};
@@ -37,24 +41,38 @@ module.exports = class Katana {
 	}
 
 	push(data, key) {
+	write(data, key) {
 		if (this.library[key]) throw new Error("Key already exists");
-		this.store.push(data);
-		this.library[key] = this.store.length - 1;
-		this.store[this.library[key]] = this.encode(this.store[this.library[key]]);
+		try {
+			this.store.push(data);
+			this.library[key] = this.store.length - 1;
+			this.store[this.library[key]] = this.encode(this.store[this.library[key]]);
+		} catch {
+			throw new Error("Failed to write to datastore");
+		}
 	}
 
+	overwrite(data, key) {
+		try {
+			this.delete(key);
+		} catch {
+			throw new Error("Key does not already exist");
+		}
+		this.write(data, key);
+	}
 	get(key) {
 		if (this.store[this.library[key]] == undefined) throw new Error("Key does not exist");
 		return this.decode(this.store[this.library[key]]);
 	}
 
 	delete(key) {
+		if(this.library[key] == undefined) throw new Error("Trying to delete non-existent key");
 		this.store.splice(this.store.indexOf(this.library[key]), 1);
 		delete this.library[key];
 		try {
-			if(this.get(key)) throw new Error("Failed to delete key");
+			if (this.get(key)) throw new Error("Failed to delete key");
 		} catch {
-			return;
+			return true;
 		}
 	}
 
@@ -97,4 +115,6 @@ module.exports = class Katana {
 		fs.writeFileSync(this.strPath, JSON.stringify(this.store));
 		fs.writeFileSync(this.libPath, JSON.stringify(this.library));
 	}
-};
+}
+
+module.exports = Katana;
