@@ -91,7 +91,7 @@ class Katana {
  		* Deletes an entry in the datastore
  		* @param {String} key Key you want to delete
  		* @ignore
-		* @returns {boolean}
+		* @returns {Boolean}
  	*/
 	delete(key) {
 		if(this.library[key] == undefined) throw new Error("Trying to delete non-existent key");
@@ -102,6 +102,16 @@ class Katana {
 		} catch {
 			return true;
 		}
+	}
+
+	/**
+ 		* Encodes a string into an array of numbers
+ 		* @param {String} key String to encode
+ 		* @ignore
+		* @returns {Boolean} Returns true if successful or false if not.
+	*/
+	has(key) {
+		return this.library[key] != undefined;
 	}
 
 	/**
