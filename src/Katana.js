@@ -143,7 +143,7 @@ class Katana {
 		this.store = this.store.map(entry => {
 			return entry.map((num) => num * seed);
 		});
-		fs.writeFileSync(this.encryptOpt.seedPath, `${seed}`);
+		if(this.encryptOpt.enable) fs.writeFileSync(this.encryptOpt.seedPath, `${seed}`);
 	}
 
 	/**
