@@ -107,10 +107,10 @@ class Katana {
 	}
 
 	/**
- 		* Encodes a string into an array of numbers
- 		* @param {String} key String to encode
+ 		* Check if datastore is has a entry for the given key
+ 		* @param {String} key String to check for
  		* @ignore
-		* @returns {Boolean} Returns true if successful or false if not.
+		* @returns {Boolean} Returns true if the key exists or false if not.
 	*/
 	has(key) {
 		return this.library[key] != undefined;
