@@ -19,7 +19,8 @@ class Katana {
 		this.libPath = path.join(dsPath, "library.json");
 		this.encryptOpt = {
 			enable: options.encrypt,
-			seedPath: path.join(dsPath, "seed.txt")
+			seedPath: path.join(dsPath, "seed.txt"),
+			seed: 0
 		};
 		this.store = [];
 		this.library = {};
@@ -37,6 +38,7 @@ class Katana {
 
 			process.addListener("beforeExit", () => {
 				if (this.encryptOpt.enable) this.encrypt();
+				fs.writeFileSync(this.encryptOpt.seedPath, `${this.encryptOpt.seed}`);
 				this.saveState();
 			});
 		}
@@ -139,11 +141,10 @@ class Katana {
  		* @ignore
  	*/
 	encrypt() {
-		let seed = Math.fround(Math.random() * 100000);
+		this.encryptOpt.seed = Math.fround(Math.random() * 100000);
 		this.store = this.store.map(entry => {
-			return entry.map((num) => num * seed);
+			return entry.map((num) => num * this.encryptOpt.seed);
 		});
-		if(this.encryptOpt.enable) fs.writeFileSync(this.encryptOpt.seedPath, `${seed}`);
 	}
 
 	/**
