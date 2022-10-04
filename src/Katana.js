@@ -48,7 +48,6 @@ class Katana {
  		* Writes data to the datastore
  		* @param {String} data Text to write to the datastore
  		* @param {String} key Key you want to store the data under
- 		* @ignore
 		* @returns {void}
  	*/
 	write(data, key) {
@@ -66,7 +65,6 @@ class Katana {
  		* Writes data to the datastore & overwrites existing data under the same key.
  		* @param {String} data Text to write to the datastore
  		* @param {String} key Key you want to store the data under (MUST ALREADY EXIST)
- 		* @ignore
 		* @returns {void}
  	*/
 	overwrite(data, key) {
@@ -81,7 +79,6 @@ class Katana {
 	/**
  		* Retrieves data from the datastore
  		* @param {String} key Key you want to store the data under (MUST ALREADY EXIST)
- 		* @ignore
 		* @returns {String} Data stored under the key
  	*/
 	get(key) {
@@ -92,7 +89,6 @@ class Katana {
 	/**
  		* Deletes an entry in the datastore
  		* @param {String} key Key you want to delete
- 		* @ignore
 		* @returns {Boolean}
  	*/
 	delete(key) {
@@ -109,7 +105,6 @@ class Katana {
 	/**
  		* Check if datastore is has a entry for the given key
  		* @param {String} key String to check for
- 		* @ignore
 		* @returns {Boolean} Returns true if the key exists or false if not.
 	*/
 	has(key) {
@@ -119,7 +114,6 @@ class Katana {
 	/**
  		* Encodes a string into an array of numbers
  		* @param {String} entry String to encode
- 		* @ignore
 		* @returns {Array} Array of numbers
  	*/
 	encode(entry) {
@@ -129,7 +123,6 @@ class Katana {
 	/**
  		* de-encodes a array of numbers into a string
  		* @param {Array} entry Key you want to delete
- 		* @ignore
 		* @returns {String} Array de-encoded
  	*/
 	decode(array) {
@@ -138,7 +131,6 @@ class Katana {
 
 	/**
  		* "Encrypts" entire live datastore
- 		* @ignore
  	*/
 	encrypt() {
 		this.encryptOpt.seed = Math.fround(Math.random() * 100000);
@@ -149,7 +141,6 @@ class Katana {
 
 	/**
  		* "De-encrypts" entire live datastore
- 		* @ignore
  	*/
 	decrypt() {
 		this.store = this.store.map((entry) => {
@@ -159,7 +150,6 @@ class Katana {
 
 	/**
  		* "Encrypts" entire live datastore
- 		* @ignore
 		* @returns {Array} Containing the library & store
  	*/
 	exportState() {
@@ -172,7 +162,6 @@ class Katana {
 
 	/**
  		* Hot-wipes the datastore
- 		* @ignore
  	*/
 	purgeState() {
 		this.store = [];
@@ -181,7 +170,6 @@ class Katana {
 
 	/**
  		* Saves the datastore to disk
- 		* @ignore
  	*/
 	saveState() {
 		fs.writeFileSync(this.strPath, JSON.stringify(this.store));
